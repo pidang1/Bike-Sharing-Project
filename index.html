@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analysis of Washington D.C. Bike-Share Data</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link href="style.css" rel="stylesheet" />
+
+</head>
+<body>
+  
+  <h1>Analysis of Washington D.C. Bike-Share Data</h1>
+
+  <h2>Introduction</h2>
+
+  <p>For our project, we wanted to explore bike sharing data in 
+    Washington D.C. and learn more about what factors affect the 
+    amount of customers that the bike sharing system has. This is 
+    an important topic to explore because using a bike share system 
+    in cities can be a great way to reduce the environmental issues 
+    caused by cars or other types of transportation, such as increased 
+    use of electricity, gasoline consumption, and carbon emissions.
+     However, while a bike share system is a good solution in theory, 
+     it can be difficult to implement practically because of weather 
+     and seasonal related issues that reduce the number of customers 
+     willing to bike. Therefore, it is highly relevant to look at past 
+     data and analyze trends in bike share usage based on weather and 
+     season data to assess the situations where bike shares are more popular 
+     and which situations usually result in fewer bike share users. 
+     This information can be critical to understanding patterns in bike 
+     share usage, and could even help inform how future advertising and 
+     marketing techniques for bike shares can be set up. </p>
+
+  <p>Numerous studies have been conducted in this topic area, as bike sharing in cities 
+    has become increasingly popular for many reasons, including practical and environmental 
+    factors. A study done by the 
+    <a href="https://www.academia.edu/81352256/How_does_the_weather_affect_the_shared_bicycle_usage">Danish Journal of Transportation Research</a>  
+    analyzed shared
+     bicycle usage in Oslo during the 2017 season, examining how weather, specifically rain 
+     and temperature, impacts trip patterns. The data reveals that weather affects both the 
+     number and type of trips made. Rain negatively impacts usage, particularly for long and
+      slow trips, while fast trips and those during morning rush hours are less affected. 
+      Warmer temperatures increase the number of trips, with the biggest effect in the evening, 
+      and slow-paced trips are more influenced by warm weather than fast-paced ones. The 
+      research highlights how weather can shape cycling habits and offers insights for 
+      transportation planning, suggesting that shared bicycles provide a flexible travel 
+      option, especially for short trips, regardless of weather. </p>
+
+  <p>Another interesting and more recent <a href="https://ieeexplore.ieee.org/document/10112160">study</a> links 
+    shared rides and weather patterns affected by climate change. 
+    This study explores how weather, specifically ambient temperature, affects bike share usage in New York City,
+     using data from 37 million Citi Bike® rides from 2013 to 2017. It reveals a nonlinear relationship where 
+     ridership increases with rising temperatures but drops when temperatures exceed 26–28°C. By combining this
+      data with climate projections, the researchers estimate how future temperature changes due to climate change 
+      could impact biking behavior. They predict overall increases in bike usage by mid-century, driven by warmer 
+      winters, springs, and falls, though extreme summer heat could eventually cause decline. This study highlights 
+      the importance of considering weather patterns in understanding the future implications of climate change on 
+      bike share programs.</p>
+
+  
+
+  <h3>Data Introduction & Data Cleaning</h3>
+
+  <p> This analysis is based on a <a href="https://www.kaggle.com/datasets/juliajemals/bike-sharing-washington-dc">bike-sharing dataset</a> from Kaggle that contains 
+    2,922 rows and 29 columns. This dataset hosts a multitude of attributes 
+    of weather condition, temperature reading, and bike usage statistics. The 
+    variables include average, minimum, and maximum temperatures (temp_avg, temp_min,
+     temp_max), precipitation, wind speed, and a few binary variables of specific weather 
+     types, such as fog, rain, thunder, and more. It also contains data on bike sharing, 
+     which is basically the number of casual and registered users: casual, registered, 
+     and an aggregate number of customers: total_cust. This data was derived from 
+     <a href="https://capitalbikeshare.com/system-data">records of the bike-sharing program </a>
+     matched with the
+     <a href="https://www.ncdc.noaa.gov/cdo-web/search"> weather data</a> of the local area
+      to have a look into the effects caused by weather conditions on bike use.</p> 
+      
+      <p>To clean this data, we first dealt with missing values in many columns like weather conditions, holiday data, and customer count. 
+      </p>
+      <ul>
+        <li>Filled missing (NaN) weather condition values with 0 
+        </li>
+        <li>Set missing holiday data to 0, indicating no holiday
+        </li>
+        <li>Calculated missing “temp_avg” using temp_min and temp_max</li>
+        <li>Dropped rows where there was missing customer information.</li>
+      </ul>
+      <p>After the cleaning, there were no remaining NaN values and a total of 2,918 observations. 
+        Additionally, we wanted to create visualizations with seasons, which wasn't originally
+        included in the dataset. So, we calculated and added a new attribute ‘season’ by mapping dates to a specific 
+        season based on predefined ranges. After data cleaning, the attributes in the dataset were:
+      </p>
+
+      <div class="center">
+      <table class="tg">
+          <thead>
+            <tr>
+              <th class="tg-0lax">Variable Name</th>
+              <th class="tg-0lax">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tg-0lax">date</td>
+              <td class="tg-0lax">Date of observation</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">temp_avg</td>
+              <td class="tg-0lax">Average temperature in Celsius (average of min and max) </td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">temp_min</td>
+              <td class="tg-0lax">Minimum temperature on that day in Celsius</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">temp_max</td>
+              <td class="tg-0lax">Maximum temperature on that day in Celsius </td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">temp_observ</td>
+              <td class="tg-0lax">Temperature in Celsius at time of observation </td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">precip</td>
+              <td class="tg-0lax">Amount of precipitation (mm)</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">wind</td>
+              <td class="tg-0lax">Wind speed (m/s)</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">wt_x</td>
+              <td class="tg-0lax">Binary variables with weather type information (wt_fog, wt_heavy_fog, wt_thunder, 
+                wt_sleet, wt_hail, wt_glaze, wt_haze, wt_drift_snow, wt_high_wind, wt_mist, wt_drizzle,
+              wt_rain, wt_freeze_rain, wt_snow, wt_ground_fog, wt_ice_fog, wt_freeze_drizzle, wt_unknown). It is possible
+            for dates to be associated with multiple weather types.</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">casual</td>
+              <td class="tg-0lax">Number of unregistered customers on that date</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">registered</td>
+              <td class="tg-0lax">Number of registered customers on that date</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">total_cust</td>
+              <td class="tg-0lax">Number of total customers on that date</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">holiday</td>
+              <td class="tg-0lax">Binary variable indicating whether day is a holiday</td>
+            </tr>
+            <tr>
+              <td class="tg-0lax">season</td>
+              <td class="tg-0lax">season (winter, spring, summer, fall). Not originally part of the dataset</td>
+            </tr>
+          </tbody>
+          </table>
+      </div>
+      
+
+      <h3>What are the trends of bike share data over time?</h3>
+
+      <p> To begin our analysis of the data, we first created a line graph that represents the overall trend of 
+        data over time. More specifically, it displays the number of bike share 
+        customers each day from 2011 to 2018 in Washington D.C. There is an interactive 
+        component to the plot where if you select a section of data on the line plot, 
+        a bar chart will populate to the right that has information about the number of 
+        entries in each season. </p>
+
+          <div class = 'center'>
+              <iframe src="linechart.html" width="100%" height="450px" frameborder="0"></iframe>
+          </div>
+          
+          <p>It can be seen that there is a cyclical trend in the data where every year, 
+            there is a rise and fall of the data corresponding to the seasons (for example, 
+            there is usually a relative peak in the data around July of each year and a relative minimum 
+            in the data around January). Additionally, it can be observed that the data has a 
+            positive trend overall indicating that as time has gone on, more and more customers 
+            have started using the bike share system, especially in the summer months. This suggests 
+            that the bike share system has increased in popularity over time and also indicates that 
+            more people are likely to use the bike share system during the warmer seasons.
+
+          </p>
+        
+          <h3>How does weather type impact total customers?</h3>
+
+          <p>
+            We were then curious to see trends in weather type and how it might affect bike-share usage.
+            The bar chart illustrates how various weather conditions influence the mean 
+            number of total customers. Notably, days with thunder attract the highest average 
+            number of customers, approximately 9,000, followed by days with fog, haze, and hail,
+             all exceeding an average of 7,000 customers. Heavy fog and high wind also show 
+             relatively high customer counts, indicating that these conditions do not significantly 
+             deter customer activity. In contrast, less favorable weather types such as freezing 
+             drizzle, drifting snow, freezing rain, and unknown conditions correspond to lower mean
+              customer numbers, with averages below 4,000. This suggests that adverse or uncertain 
+              weather conditions may negatively impact customer turnout, whereas more stable or dramatic 
+              weather conditions, like thunder or fog, might either be less impactful or even coincide with 
+              increased activity due to other factors. Overall, the chart provides insight into how different 
+              weather types correlate with customer behavior.
+          </p>
+    
+          <div class = 'center'>
+              <iframe src="barchart_project.html" width="95%" height="600px" frameborder="0"></iframe>
+          </div>
+
+      <h3>How do casual and registered customers differ?</h3>
+      
+      <div class = 'container'>
+          <div class = 'image'>
+              <iframe src="project_histogram.html" width="100%" height="320px" frameborder="0"></iframe>
+          </div>
+          <div class = 'text'>
+              <p> We also noted that there was a distinction between casual and registered customers in the dataset,
+                and wanted to see if there were any differences that could be seen with these variables. We created
+                histograms of the distribution of casual and registered customers, where it can be seen that the casual 
+                distribution has a lower mean and is positively skewed, while the registered distribution
+                 is fairly symmetrical with a higher mean. This suggests that it's more likely for there to 
+                 be a high number of registered customers on any given day than it is for there to be casual
+                  customers, which might indicate customers who are registered are more consistently using 
+                  the bike share platform.
+              </p>
+          </div>            
+      </div>
+      
+      <h3> How does precipitation impact total bike share customers?</h3>
+
+      <div class = 'container'>
+          <div class = 'text'>
+              <p>
+                After observing that both weather type and customer registration status could affect bike-share usage,
+                we then wanted to explore the interplay of these factors.
+                This visualization shows the relationship between bike-sharing rentals and 
+                precipitation, with three views: casual customers, registered customers, 
+                and total customers (casual + registered). The interactive dropdown on this plot can 
+              be used to switch between the views. This plot reveals how different types 
+                of customers respond to weather conditions, with casual customers generally 
+                showing a stronger decline in rentals as precipitation increases, while registered 
+                customers may be less affected due to regular use for commuting. The total customer
+                 plot combines both groups, offering insights into overall bike rental trends in
+                  response to precipitation (in general, higher precipitation leads to lower bike-share usage).
+              </p>
+              
+          </div>
+
+          <div class = 'image'>
+            <iframe src="precip_scatter.html" width="100%" height="440px" frameborder="0"></iframe>
+          
+          </div>   
+      </div>
+
+      
+      
+      <h3> How does temperature impact total bike share customers? </h3>
+
+      <div class = 'center'>
+          <iframe src="temperature.html" width="100%" height="670px" frameborder="0"></iframe>
+      </div>
+      <p>Finally, we looked into temperature's impact on bike-share usage.
+        This visualization (created using D3) shows the relationship between maximum temperature and the total number 
+        of bike-sharing customers. We also added an interactive slider that filters data points by their max temperature value, 
+        allowing users to focus on specific ranges of temperature.
+        We can see that as the temperature increases, the number of customers
+         generally increases. This means that warmer days encourage more people to use the bike system, 
+         while colder days have lower amount of customers. However, extreme temperatures above 30°C seem 
+         to result in fewer users as well. 
+    </p>
+
+
+      
+
+
+      <h3>Conclusion </h3>
+
+      <p>
+        In summary, this project's work will be useful for having a better 
+        understanding of the factors that impact bike share usage in Washington 
+        DC. These visualizations suggest that increases in bike share usage 
+        could be associated with:
+ 
+      </p>
+
+      <ul>
+        <li>spring/summer seasons</li>
+        <li>not certain weather types (ex. freezing rain/drizzle, ice fog)</li>
+        <li>registered customers</li>
+        <li>low precipitation (especially with casual customers)</li>
+        <li>a higher maximum temperature (but not too high)</li>
+      </ul>
+      <p>
+        Ultimately, this knowledge can be critical in informing when the bike 
+        share system is more likely to be used, and can help figure out how to 
+        increase user retention. For example, the city could put out an ad campaign 
+        to encourage people to register for the bike share, which could increase the
+         likelihood that they will use the system. Additionally, they could switch 
+         out the bikes during colder seasons with tires with better traction for 
+         snow/sleet weather, or provide fog headlamps, which could also encourage
+          more people to use the bike share on off weather days. 
+
+          However, it should be noted that this data (2011-2018) is not up-to-date, and there could 
+          have been changes in trends in recent years that would not have been captured
+          by these visualizations. 
+      </p>
+
+      <h3>Contact us!</h3>
+
+      <p>This project was created by Shreya Rajeswaran (rajeswaran.s@northeastern.edu),
+        Pierre Dang (dang.pi@northeastern.edu), Melina Lymberopoulos 
+        (lymberopoulos.m@northeastern.edu), and Rishpiath Satter (satter.r@northeastern.edu).
+      </p>
+
+
+
+  
+</body>
+</html>
