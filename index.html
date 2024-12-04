@@ -167,22 +167,26 @@
         customers each day from 2011 to 2018 in Washington D.C. There is an interactive 
         component to the plot where if you select a section of data on the line plot, 
         a bar chart will populate to the right that has information about the number of 
-        entries in each season. </p>
+        entries in each season.There is also a tooltip interaction where users can hover 
+      over a point in the chart and will be provided information about that day's maximum temperature
+      and number of casual and registered customers. </p>
+
+        <p>It can be seen that there is a cyclical trend in the data where every year, 
+          there is a rise and fall of the data corresponding to the seasons (for example, 
+          there is usually a relative peak in the data around July of each year and a relative minimum 
+          in the data around January). Additionally, it can be observed that the data has a 
+          positive trend overall indicating that as time has gone on, more and more customers 
+          have started using the bike share system, especially in the summer months. This suggests 
+          that the bike share system has increased in popularity over time and also indicates that 
+          more people are likely to use the bike share system during the warmer seasons.
+
+        </p>
 
           <div class = 'center'>
-              <iframe src="linechart.html" width="100%" height="450px" frameborder="0"></iframe>
+              <iframe src="linechart.html" width="100%" height="430px" frameborder="0"></iframe>
           </div>
           
-          <p>It can be seen that there is a cyclical trend in the data where every year, 
-            there is a rise and fall of the data corresponding to the seasons (for example, 
-            there is usually a relative peak in the data around July of each year and a relative minimum 
-            in the data around January). Additionally, it can be observed that the data has a 
-            positive trend overall indicating that as time has gone on, more and more customers 
-            have started using the bike share system, especially in the summer months. This suggests 
-            that the bike share system has increased in popularity over time and also indicates that 
-            more people are likely to use the bike share system during the warmer seasons.
-
-          </p>
+          
         
           <h3>How does weather type impact total customers?</h3>
 
@@ -203,50 +207,49 @@
           </p>
     
           <div class = 'center'>
-              <iframe src="barchart_project.html" width="95%" height="600px" frameborder="0"></iframe>
+              <iframe src="barchart_project.html" width="95%" height="430px" frameborder="0"></iframe>
           </div>
 
       <h3>How do casual and registered customers differ?</h3>
       
-      <div class = 'container'>
-          <div class = 'image'>
-              <iframe src="project_histogram.html" width="100%" height="320px" frameborder="0"></iframe>
-          </div>
-          <div class = 'text'>
-              <p> We also noted that there was a distinction between casual and registered customers in the dataset,
-                and wanted to see if there were any differences that could be seen with these variables. We created
-                histograms of the distribution of casual and registered customers, where it can be seen that the casual 
-                distribution has a lower mean and is positively skewed, while the registered distribution
-                 is fairly symmetrical with a higher mean. This suggests that it's more likely for there to 
-                 be a high number of registered customers on any given day than it is for there to be casual
-                  customers, which might indicate customers who are registered are more consistently using 
-                  the bike share platform.
-              </p>
-          </div>            
+      <p> We next noted that there was a distinction between casual and registered customers in the dataset,
+        and wanted to see if there were any differences that could be seen with these variables. We created
+        histograms of the distribution of casual and registered customers, where it can be seen that the casual 
+        distribution has a lower mean and is positively skewed, while the registered distribution
+         is fairly symmetrical with a higher mean. This suggests that it's more likely for there to 
+         be a high number of registered customers on any given day than it is for there to be casual
+          customers, which might indicate customers who are registered are more consistently using 
+          the bike share platform.
+      </p>
+
+      <div class = 'center'>
+              <iframe src="project_histogram.html" width="100%" height="430px" frameborder="0"></iframe>
+          
+                    
       </div>
       
       <h3> How does precipitation impact total bike share customers?</h3>
 
-      <div class = 'container'>
-          <div class = 'text'>
-              <p>
-                After observing that both weather type and customer registration status could affect bike-share usage,
-                we then wanted to explore the interplay of these factors.
-                This visualization shows the relationship between bike-sharing rentals and 
-                precipitation, with three views: casual customers, registered customers, 
-                and total customers (casual + registered). The interactive dropdown on this plot can 
-              be used to switch between the views. This plot reveals how different types 
-                of customers respond to weather conditions, with casual customers generally 
-                showing a stronger decline in rentals as precipitation increases, while registered 
-                customers may be less affected due to regular use for commuting. The total customer
-                 plot combines both groups, offering insights into overall bike rental trends in
-                  response to precipitation (in general, higher precipitation leads to lower bike-share usage).
-              </p>
-              
-          </div>
+      <p>
+        After observing that both weather type and customer registration status could affect bike-share usage,
+        we then wanted to explore the interplay of these factors.
+        This visualization shows the relationship between bike-sharing rentals and 
+        precipitation, with three views: casual customers, registered customers, 
+        and total customers (casual + registered). The interactive dropdown on this plot can 
+      be used to switch between the views. The tooltip interaction also reveals maximum temperature
+      and wind speed data for each point the user hovers over.
+    </p>
+      <p>This plot reveals how different types 
+        of customers respond to weather conditions, with casual customers generally 
+        showing a stronger decline in rentals as precipitation increases, while registered 
+        customers may be less affected due to regular use for commuting. The total customer
+         plot combines both groups, offering insights into overall bike rental trends in
+          response to precipitation (in general, higher precipitation leads to lower bike-share usage).
+      </p>
 
-          <div class = 'image'>
-            <iframe src="precip_scatter.html" width="100%" height="440px" frameborder="0"></iframe>
+      <div class = 'center'>
+          
+            <iframe src="precip_scatter.html" width="100%" height="430px" frameborder="0"></iframe>
           
           </div>   
       </div>
@@ -255,11 +258,8 @@
       
       <h3> How does temperature impact total bike share customers? </h3>
 
-      <div class = 'center'>
-          <iframe src="temperature.html" width="100%" height="670px" frameborder="0"></iframe>
-      </div>
       <p>Finally, we looked into temperature's impact on bike-share usage.
-        This visualization (created using D3) shows the relationship between maximum temperature and the total number 
+        This visualization shows the relationship between maximum temperature and the total number 
         of bike-sharing customers. We also added an interactive slider that filters data points by their max temperature value, 
         allowing users to focus on specific ranges of temperature.
         We can see that as the temperature increases, the number of customers
@@ -267,6 +267,11 @@
          while colder days have lower amount of customers. However, extreme temperatures above 30°C seem 
          to result in fewer users as well. 
     </p>
+
+      <div class = 'center'>
+          <iframe src="temperature.html" width="100%" height="430px" frameborder="0"></iframe>
+      </div>
+      
 
 
       
