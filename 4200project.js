@@ -83,5 +83,5 @@ d3.csv("bike_sharing_dataset.csv").then(function(data) {
         .attr("cx", d => xScale(d.temp_max))
         .attr("cy", d => yScale(d.total_cust))
         .attr("r", 5)
-        .style("fill", "steelblue");
+        .style("fill", "#800080");
 });
